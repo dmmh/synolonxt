@@ -3,7 +3,7 @@ synolonxt
 
 NXT client for Synology NAS
 
-This is a modified version of the NXT install script by j0b for Synology NAS. 
+This is a modified version for Synology NAS of the NXT install script by j0b. 
 Original located here: https://github.com/jobbet/nxt
 
 This has been tested on a DS213j.
