@@ -25,7 +25,7 @@ ORIGINAL LICENSE:
 The NXT client needs Java to work, so this script assumes you have installed the beta Synology application Java Manager.
 Get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0
 
-The script uses optware to install, and WILL NOT WORK on a default Synology installation.
+This README assumes you have git installed via optware, and the command below to install it WILL NOT WORK on a default Synology installation.
 You can of course manually download the 3 files, and run the script.
 
 INSTALL
