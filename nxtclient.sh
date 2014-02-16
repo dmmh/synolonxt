@@ -23,11 +23,17 @@
 source "/etc/nxt/nxt.conf"
 log=$install_dir/nxt.log
 wget_bin=$(which wget);
+java_bin=$(which java);
 
 if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] || [[ -z "$javapath" ]] ||
    [[ -z "$client_start_args" ]] || [[ -z "$client_stop_args" ]]; then
 
     echo "Missing configuration in nxt.conf";
+    exit 0
+fi
+
+if [[ "$java_bin" == '' ]]; then
+	echo "Java is not installed. Please install Java first. Easiest way is using Synology beta Java Manager, get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0"
     exit 0
 fi
 
