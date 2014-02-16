@@ -97,7 +97,7 @@ install(){
     
 	if [[ "$1" != "update" ]]; then
 		cp $c/nxtclient.sh $script_dir > /dev/null 2>&1 || { echo "Could not copy NXT client init script into" $script_dir; exit 1; }
-		cp $c/nxt_install.sh $cfg_dir > /dev/null 2>&1 || { echo "Could not copy NXT client install script into" $cfg_dir; exit 1; }
+		cp $c/install.sh $cfg_dir > /dev/null 2>&1 || { echo "Could not copy NXT client install script into" $cfg_dir; exit 1; }
     fi
 	
     sha=$(grep "$client_zip" $tmp_dir/$client_sign_file | awk {'print $1'});
