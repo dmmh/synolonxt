@@ -111,9 +111,6 @@ install(){
             echo "Done."
 			touch $current_version
 			echo "$client_zip" > $current_version
-			if [[ "$1" != "update" ]]; then
-				cp $c/nxt_install.sh $cfg_dir
-			fi
             $unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
 			{ echo "Could not extract files into NXT client root directory."; exit 1; }		
         else
