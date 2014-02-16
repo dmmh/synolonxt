@@ -32,7 +32,7 @@ INSTALL
 
 1. 	Install this script: 	$ cd /volume1/@tmp && git clone https://github.com/dmmh/synolonxt && chmod -R 755 synolonxt && cd synolonxt
 
-2. 	Install NXT client: 	$ /volume1/@tmp/synolonxt/install.sh install
+2. 	Install NXT client: 	$ install.sh install
 	This will install the latest version of NXT client
 	If you want a different version, specify that as second argument, e.g. $ /volume1/@tmp/synolonxt/install.sh install 0.5.7
 	The client is downloaded from the public source for NXT client software.
