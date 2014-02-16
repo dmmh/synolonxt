@@ -153,6 +153,10 @@ update(){
 	fi
 }
 
+host(){
+	vi $install_dir/webapps/root/WEB-INF/web.xml
+}
+
 case "$1" in
 
     install)
@@ -162,9 +166,10 @@ case "$1" in
             install
         fi
 
-        echo "Installation done. Start NXT client with $script_dir/nxtclient.sh start, then browse to https://localhost:7875";
+        echo "Installation done. Start NXT client with $ $script_dir/nxtclient.sh start, then browse to https://localhost:7875";
 		echo "Or reboot and NXT client will start itself."
         echo "Be sure to accept incoming TCP traffic to port 7874, or the NXT client will not be able to communicate with it's network.";
+		echo "If you get a screen saying \"The Matrix has you...\", run $ $cfg_dir/install.sh host and add your computer's IP to the allowedUserHosts xml field.";
     ;;
     update)
         if [[ -n "$2" ]]; then
@@ -175,11 +180,16 @@ case "$1" in
 
         echo "Update done.";        
     ;;
+	host)
+	    echo "Opening file to edit allowedUserHosts"; 
+		host
+       
+    ;;
 
     *)
 
     N=${0##*/}
-    echo "Usage: $N {install|update}" >&2
+    echo "Usage: $N {install|update|host}" >&2
     exit 1
     ;;
 esac
