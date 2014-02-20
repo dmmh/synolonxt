@@ -19,122 +19,177 @@
 #  you can send me NXT, my public key is above.
 #  ----------------------------------------------------------------------------
 
-# NXT-Client configuration
-source "/etc/nxt/nxt.conf"
-log=$install_dir/nxt.log
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/syno/bin";
+
 wget_bin=$(which wget);
-java_bin=$(which java);
+unzip_bin=$(which unzip);
+openssl_bin=$(which openssl);
+if [[ -e "nxt.conf" ]]; then
+	source "nxt.conf"
+else
+	source "/etc/nxt/nxt.conf"
+fi
+c=`pwd`
 
-if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] || [[ -z "$javapath" ]] ||
-   [[ -z "$client_start_args" ]] || [[ -z "$client_stop_args" ]]; then
-
-    echo "Missing configuration in nxt.conf";
-    exit 0
+if [[ -z "$wget_bin" ]] || [[ -z "$unzip_bin" ]] || [[ -z "$openssl_bin" ]]; then
+    echo "Unsatisfied binary dependencies.";
+    if [[ -z "$wget_bin" ]]; then
+        echo "This script uses the following binary: wget";
+    fi
+    if [[ -z "$unzip_bin" ]]; then
+        echo "This script uses the following binary: unzip";
+    fi
+    if [[ -z "$openssl_bin" ]]; then
+        echo "This script uses the following binary: openssl";
+    fi
+    echo "These applications must be installed in order to run this script.";
+    exit 1;
 fi
 
-if [[ "$java_bin" == '' ]]; then
-	echo "Java is not installed. Please install Java first. Easiest way is using Synology beta Java Manager, get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0"
-    exit 0
-fi
+install(){
 
-start() {
-	echo "Starting NXT-Client..."
-    c=`pwd`
-	if [ -e $pidfile ] ; then
-        echo "NXT-Client is already running. PID=`cat $pidfile`"
+    if [[ ! -d "$cfg_dir" ]]; then
+        echo -n "Creating configuration directory for NXT client.. ";
+        mkdir -p $cfg_dir && echo "done." || { echo "Could not create NXT client configuration directory." ; exit 1;}
+        cp $c/nxt.conf $cfg_dir
+    fi
+	
+	if [[ ! -d "$install_dir" ]]; then    
+        echo -n "Creating NXT client root directory.. ";
+        mkdir -p $install_dir && echo "done." || { echo "Could not create NXT client root directory." ; exit 1;}
+    fi
+
+    if [[ "$1" != "update" ]] && [[ "$(ls $install_dir | wc -l)" -gt 0 ]]; then
+        echo "NXT client root directory contain files. If you want to overwrite this, issue an update.";
         exit 0;
     fi
-	if [[ -e $log ]]; then
-		rm $log
-	fi
-	touch $log
-	cd $install_dir
-    "$javapath" $client_start_args >>$log 2>&1 & pid=$!
-    touch $pidfile && chown $nxtuser:$nxtuser $pidfile
-	echo $pid > $pidfile
-    cd $c
-	status
-	echo "It might take 1-15 minutes or so before you will be able to access the NXT client via your browser...be patient."
-	echo "You can watch the NXT client's output by using $ "$script_dir"/nxtclient.sh log";
-	echo "If your blockchain is corrupted, you can restore the virgin state of blocks and transactions by using: $ "$script_dir"/nxtclient.sh init";
-}
 
-stop() {
-    c=`pwd`
-	echo "Trying to stop NXT-Client..."
-	if [ -e $pidfile ] ; then
-		#kill `cat $pidfile`
-		cd $install_dir
-        "$javapath" $client_stop_args >>$log 2>&1;
-		cd $c
-        rm $pidfile		
-		status
-    else
-        echo "NXT client is not running. No PID file."
+    if ! id -u nxt >/dev/null 2>&1; then
+        echo -n "Adding nxt user.. ";
+        adduser -H -D -h /usr/local/bin -s /sbin/nologin nxt >/dev/null 2>&1 && echo "done." ||
+        { echo "Could not add nxt user.  Add it manually after this installation has finished." && exit 1;}
     fi
+
+    if [[ -z "$2" ]]; then
+	    client_zip=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(zip$)' | tail -n 1);
+        client_sign_file=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(sha256.txt.asc$)' | tail -n 1);
+    else
+        client_zip=$2;
+    fi
+   
+    echo -n "Downloading $client_zip from http://download.nxtcrypto.org...";
+    
+    $wget_bin -P $tmp_dir -q http://download.nxtcrypto.org/$client_zip > /dev/null 2>&1 ||
+    { echo "could not download NXT client. Exiting installation."; exit 1; }
+
+    echo " Done.";
+
+    client_sign=$($wget_bin -q -O - http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep $client_sign_file | grep "asc")
+
+    if [[ -n "$client_sign" ]]; then
+        echo -n "Downloading $client_zip shasum signature...";
+
+        $wget_bin -P $tmp_dir -q http://download.nxtcrypto.org/$client_sign > /dev/null 2>&1 || 
+        { echo "could not download NXT client shasum signature. Exiting installation." ; exit 1;}
+        
+        echo " Done.";
+    fi
+    
+	if [[ "$1" != "update" ]]; then
+		cp $c/nxtclient.sh $script_dir > /dev/null 2>&1 || { echo "Could not copy NXT client init script into" $script_dir; exit 1; }
+		cp $c/install.sh $cfg_dir > /dev/null 2>&1 || { echo "Could not copy NXT client update script into" $cfg_dir; exit 1; }
+    fi
+	
+    sha=$(grep "$client_zip" $tmp_dir/$client_sign_file | awk {'print $1'});
+    
+    echo "sha:" $sha;
+
+    if [[ -n "$sha" ]]; then
+        zip_sha=$($openssl_bin dgst -sha256 $tmp_dir/$client_zip | awk {'print $2'});
+        echo "zip sha:" $zip_sha;
+        if [[ "$sha" == "$zip_sha" ]]; then
+            echo "Done."
+			touch $current_version
+			echo "$client_zip" > $current_version
+            $unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
+			{ echo "Could not extract files into NXT client root directory."; exit 1; }		
+        else
+            echo "CRITICAL: The shasum does not match!. Installation aborted.";
+            exit 1;
+        fi
+    fi
+
 }
 
-init() {
-    stop
-	echo "Restoring NXT client virgin state..."
-	if [ -e $install_dir/blocks.nxt ] ; then
-		rm $install_dir/blocks.nxt
-	fi
-	if [ -e $install_dir/blocks.nxt.bak ] ; then
-		rm $install_dir/blocks.nxt.bak
-	fi
-	if [ -e $install_dir/transactions.nxt ] ; then	
-		rm $install_dir/transactions.nxt
-	fi
-	if [ -e $install_dir/transactions.nxt.bak ] ; then
-		rm $install_dir/transactions.nxt.bak
-	fi
-	start
-}
+update(){
+	version=`cat $current_version`	
+	echo "Current installed version: $version";
+    if [[ -n "$1" ]]; then
+        asked_version=$1;
+		if [[ "$version" != "$asked_version" ]]; then
+			client_zip=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(zip$)' | grep "$asked_version");
 
-status() {
-    touch $current_version
-	version=`cat $current_version`
-	client_version=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(zip$)' | tail -n 1);
-	if [[ "$version"] != '' ]]; then
-		if [[ "$version" != "$client_version" ]]; then 
-			echo "A newer version of NXT client is available. Current version: $version, version available: $client_version".
-			echo "Trying to updating NXT client..."
-			$cfg_dir/install.sh update
+			if [[ -z "$client_zip" ]]; then
+				echo "$asked_version does not exist in current location.";
+				exit 1;
+			else
+				$script_dir/nxtclient.sh stop
+				install update $client_zip
+				$script_dir/nxtclient.sh start
+			fi
+		else
+			echo "NXT client is up to date, nothing to do..."
+		fi
+    else
+	    client_zip=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(zip$)' | tail -n 1);
+		if [[ "$version" != "$client_zip" ]]; then
+			echo "Available version: $client_zip"
+			$script_dir/nxtclient.sh stop
+			install update
+			$script_dir/nxtclient.sh start
+		else
+			echo "NXT client is up to date, nothing to update."
 		fi
 	fi
-	if [ -e $pidfile ] ; then
-		echo "NXT-Client is running!"
-    else
-		echo "NXT-Client stopped."
-	fi
-}   
+}
 
-log() {
-	cat $log
-} 
+host(){
+	vi $install_dir/webapps/root/WEB-INF/web.xml
+}
 
 case "$1" in
 
-    start)
-        start
+    install)
+        if [[ -n "$2" ]]; then
+            install $2
+        else
+            install
+        fi
+
+        echo "Installation done. Start NXT client with $ $script_dir/nxtclient.sh start, then browse to https://localhost:7875";
+		echo "Or reboot and NXT client will start itself."
+        echo "Be sure to accept incoming TCP traffic to port 7874, or the NXT client will not be able to communicate with it's network.";
+		echo "If you get a screen saying \"The Matrix has you...\", run $ $cfg_dir/install.sh host and add your computer's IP to the allowedUserHosts XML field and restart the NXT client.";
     ;;
-    stop)
-        stop
+    update)
+        if [[ -n "$2" ]]; then
+            update $2
+        else
+            update
+        fi
+
+        echo "Update done.";        
     ;;
-	init)
-        init
+	host)
+	    echo "Opening file to edit allowedUserHosts"; 
+		host
+       
     ;;
-    status)
-        status
-    ;;
-	log)
-        log
-    ;;
+
     *)
 
-    N=$script_dir/${0##*/}
-    echo "Usage: $N {start|stop|status|init|log}" >&2
+    N=${0##*/}
+    echo "Usage: $N {install|update|host}" >&2
     exit 1
     ;;
 esac
