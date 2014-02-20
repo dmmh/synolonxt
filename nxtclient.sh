@@ -54,7 +54,7 @@ start() {
 	echo $pid > $pidfile
     cd $c
 	status
-	echo "It might take 1-15 minutes or so before you will be able to access the NXT client via your browser...be patient."
+	echo "It might take up to 5 minutes or so before you will be able to access the NXT client via your browser...be patient."
 	echo "You can watch the NXT client's output by using $ "$script_dir"/nxtclient.sh log";
 	echo "If your blockchain is corrupted, you can restore the virgin state of blocks and transactions by using: $ "$script_dir"/nxtclient.sh init";
 }
