@@ -40,7 +40,7 @@ INSTALL
 
 3. Installation done. 
 
-4. Start client with: $ /usr/local/etc/rc.d/nxtclient.sh start
+4. $ reboot to start the client on boot (or from a SSH client start NXT client with: $ /usr/local/etc/rc.d/nxtclient.sh start)
 
 UPDATE
 
