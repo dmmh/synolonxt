@@ -100,7 +100,7 @@ status() {
 		if [[ "$version" != "$client_version" ]]; then 
 			echo "A newer version of NXT client is available. Current version: $version, version available: $client_version".
 			echo "Trying to updating NXT client..."
-			$cfg_dir/nxt_install.sh update
+			$cfg_dir/install.sh update
 		fi
 	fi
 	if [ -e $pidfile ] ; then
