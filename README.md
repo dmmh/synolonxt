@@ -26,7 +26,7 @@ The NXT client needs Java to work, so this script assumes you have installed the
 Get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0
 
 This README assumes you have git installed via optware, and the command below to install it WILL NOT WORK on a default Synology installation.
-You can of course manually download the 3 files, and run the script.
+The script itself also uses optware which isn't installed by default.
 
 INSTALL
 
