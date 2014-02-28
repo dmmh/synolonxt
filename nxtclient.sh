@@ -102,9 +102,6 @@ case "$1" in
     stop)
         stop
     ;;
-	init)
-        init
-    ;;
     status)
         status
     ;;
