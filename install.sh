@@ -92,7 +92,7 @@ install(){
         $wget_bin -P $tmp_dir -q http://download.nxtcrypto.org/$client_sign > /dev/null 2>&1 || 
         { echo "could not download NXT client shasum signature. Exiting installation." ; exit 1;}
         
-        echo " Done.";
+        echo "done.";
     fi
     
 	if [[ "$1" != "update" ]]; then

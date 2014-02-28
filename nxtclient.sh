@@ -56,7 +56,6 @@ start() {
 	status
 	echo "It might take up to 5 minutes or so before you will be able to access the NXT client via your browser...be patient."
 	echo "You can watch the NXT client's output by using $ "$script_dir"/nxtclient.sh log";
-	echo "If your blockchain is corrupted, you can restore the virgin state of blocks and transactions by using: $ "$script_dir"/nxtclient.sh init";
 }
 
 stop() {
@@ -71,24 +70,6 @@ stop() {
     else
         echo "NXT client is not running. No PID file."
     fi
-}
-
-init() {
-    stop
-	echo "Restoring NXT client virgin state..."
-	if [ -e $install_dir/blocks.nxt ] ; then
-		rm $install_dir/blocks.nxt
-	fi
-	if [ -e $install_dir/blocks.nxt.bak ] ; then
-		rm $install_dir/blocks.nxt.bak
-	fi
-	if [ -e $install_dir/transactions.nxt ] ; then	
-		rm $install_dir/transactions.nxt
-	fi
-	if [ -e $install_dir/transactions.nxt.bak ] ; then
-		rm $install_dir/transactions.nxt.bak
-	fi
-	start
 }
 
 status() {
@@ -133,7 +114,7 @@ case "$1" in
     *)
 
     N=$script_dir/${0##*/}
-    echo "Usage: $N {start|stop|status|init|log}" >&2
+    echo "Usage: $N {start|stop|status|log}" >&2
     exit 1
     ;;
 esac
