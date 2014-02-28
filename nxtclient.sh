@@ -33,7 +33,7 @@ if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] || [[ -z "$javapath" ]] ||
 fi
 
 if [[ -z "$java_bin" ]]; then
-	echo "Java is not installed. Please install Java first. Easiest way is using Synology beta Java Manager, get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0"
+	echo "Java is not installed. Please install Java first. Easiest way is using Synology Java Manager (beta app), get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0"
     exit 0
 fi
 
