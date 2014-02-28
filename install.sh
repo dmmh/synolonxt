@@ -154,7 +154,7 @@ update(){
 }
 
 host(){
-	vi $install_dir/webapps/root/WEB-INF/web.xml
+	vi $install_dir/conf/nxt-default.properties
 }
 
 case "$1" in
