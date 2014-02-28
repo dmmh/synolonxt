@@ -76,7 +76,7 @@ status() {
     touch $current_version
 	version=`cat $current_version`
 	client_version=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(zip$)' | tail -n 1);
-	if [[ "$version"] != '' ]]; then
+	if [[ "$version"] != '' ]] && [[ "$client_version"] != '' ]]; then
 		if [[ "$version" != "$client_version" ]]; then 
 			echo "A newer version of NXT client is available. Current version: $version, version available: $client_version".
 			echo "Trying to update NXT client..."
