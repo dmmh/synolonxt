@@ -43,6 +43,6 @@ INSTALL
 
 UPDATE
 
-1. This script auto updates the nxt client when a newer version is available. It will only do so when starting or stopping the NXT client though. 	
+1. This script auto updates the nxt client when a newer version is available. It will only do so when starting or stopping the NXT client with this script though. 	
 
 dmmh
