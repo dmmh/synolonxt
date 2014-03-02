@@ -104,7 +104,7 @@ install(){
     
     echo "sha:" $sha;
 
-    if [[ -n "$sha" ]]; then
+	if [[ -n "$sha" ]]; then
 		zip_sha=$($openssl_bin dgst -sha256 $tmp_dir/$client_zip | awk {'print $2'});
 		echo "zip sha:" $zip_sha;
 		if [[ "$sha" == "$zip_sha" ]]; then
@@ -129,8 +129,7 @@ install(){
 			echo "CRITICAL: The shasum does not match!. Installation aborted.";
 			exit 1;
 		fi
-    fi
-
+	fi
 }
 
 update(){
