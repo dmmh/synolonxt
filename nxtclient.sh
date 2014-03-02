@@ -62,9 +62,8 @@ stop() {
     c=`pwd`
 	echo "Trying to stop NXT-Client..."
 	if [ -e $pidfile ] ; then
-		cd $install_dir
-        "$javapath" $client_stop_args >>$log 2>&1;
-		cd $c
+		pid=`cat $pidfile`
+		kill $pid
         rm $pidfile		
 		status
     else
