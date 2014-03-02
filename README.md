@@ -14,14 +14,6 @@ NXT: 5382956979630465590
 thanks,
 dmmh
 
-ORIGINAL LICENSE:
-  ----------------------------------------------------------------------------
-  "THE NXT-WARE LICENSE" NXT: 13570469120032392161 (Revision: 25519)
-  j0b <gemeni@gmail.com> wrote this file. As long as you retain this notice you
-  can do whatever you want with this stuff. IF you think this stuff is worth it, 
-  you can send me NXT, my public key is above.
-  ----------------------------------------------------------------------------
-
 The NXT client needs Java to work, so this script assumes you have installed the beta Synology application Java Manager.
 Get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0
 
@@ -46,3 +38,11 @@ UPDATE
 1. This script auto updates the nxt client when a newer version is available. It will only do so when starting or stopping the NXT client with this script though. 	
 
 dmmh
+
+ORIGINAL LICENSE:
+  ----------------------------------------------------------------------------
+  "THE NXT-WARE LICENSE" NXT: 13570469120032392161 (Revision: 25519)
+  j0b <gemeni@gmail.com> wrote this file. As long as you retain this notice you
+  can do whatever you want with this stuff. IF you think this stuff is worth it, 
+  you can send me NXT, my public key is above.
+  ----------------------------------------------------------------------------
