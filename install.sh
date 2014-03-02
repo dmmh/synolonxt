@@ -112,18 +112,18 @@ install(){
 			touch $current_version
 			echo "$client_zip" > $current_version
 			if [[ -f "$install_dir/conf/nxt-default.properties" ]]; then
-                echo -n "Backing up configuration file...";
-                cp $install_dir/conf/nxt-default.properties /volume1/@tmp || 
-                { echo "Could not backup configuration file."; exit 1; }
-                echo "done.";
+				echo -n "Backing up configuration file...";
+				cp $install_dir/conf/nxt-default.properties /volume1/@tmp || 
+				{ echo "Could not backup configuration file."; exit 1; }
+				echo "done.";
             fi
             $unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
 			{ echo "Could not extract files into NXT client root directory."; exit 1; }	
 			if [[ -f "$install_dir/conf/nxt-default.properties" ]]; then
-                echo -n "Restoring configuration file...";
-                cp /volume1/@tmp/nxt-default.properties $install_dir/conf || 
-                { echo "Could not restore configuration file."; exit 1; }
-                echo "done.";
+				echo -n "Restoring configuration file...";
+				cp /volume1/@tmp/nxt-default.properties $install_dir/conf || 
+				{ echo "Could not restore configuration file."; exit 1; }
+				echo "done.";
             fi	
         else
             echo "CRITICAL: The shasum does not match!. Installation aborted.";
