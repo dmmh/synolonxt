@@ -62,7 +62,7 @@ install(){
 	if [[ "$1" != "update" ]] && [[ "$(ls $install_dir | wc -l)" -gt 0 ]]; then
 		echo "NXT client root directory contain files. If you want to overwrite this, issue an update.";
 		exit 0;
-    fi
+	fi
 
 	if ! id -u nxt >/dev/null 2>&1; then
 		echo -n "Adding nxt user.. ";
@@ -75,8 +75,8 @@ install(){
 		client_sign_file=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(sha256.txt.asc$)' | tail -n 1);
 	else
 		client_zip=$2;
-    fi
-   
+	fi
+
 	echo -n "Downloading $client_zip from http://download.nxtcrypto.org...";
 	
 	$wget_bin -P $tmp_dir -q http://download.nxtcrypto.org/$client_zip > /dev/null 2>&1 ||
