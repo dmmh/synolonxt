@@ -1,7 +1,7 @@
 synolonxt
 =========
 
-NXT client for Synology NAS
+NXT client script for Synology NAS
 
 This is a modified version for Synology NAS of the NXT install script by j0b. 
 Original located here: https://github.com/jobbet/nxt
@@ -29,13 +29,16 @@ INSTALL
 	The client is downloaded from the public source for NXT client software.
 	During install the script validates against known sha256sum hash.
 
-3. Installation done. 
+3. 	Installation done. 
 
-4. $ reboot to start the client on boot (or from a SSH client start NXT client with: $ /usr/local/etc/rc.d/nxtclient.sh start)
+4. 	$ reboot to start the client on boot (or from a SSH client start NXT client with: $ /usr/local/etc/rc.d/nxtclient.sh start). 
+	You need to modify this line in the Nxt client configuration file: nxt.uiServerHost=127.0.0.1 to nxt.uiServerHost=0.0.0.0. 
+	(use $ /etc/nxt/install.sh host to open the configuration file)
+	Find out the local IP address of your NAS, then type http://ipadress:7875 in your browser to connect to the client. 
 
 UPDATE
 
-1. This script auto updates the nxt client when a newer version is available. It will only do so when starting or stopping the NXT client with this script though. 	
+1. This script auto updates the NXT client when a newer version is available. It will only do so when starting or stopping the NXT client with this script though. 	
 
 dmmh
 
