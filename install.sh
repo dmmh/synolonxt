@@ -105,10 +105,10 @@ install(){
     echo "sha:" $sha;
 
     if [[ -n "$sha" ]]; then
-        zip_sha=$($openssl_bin dgst -sha256 $tmp_dir/$client_zip | awk {'print $2'});
-        echo "zip sha:" $zip_sha;
-        if [[ "$sha" == "$zip_sha" ]]; then
-            echo "Done."
+		zip_sha=$($openssl_bin dgst -sha256 $tmp_dir/$client_zip | awk {'print $2'});
+		echo "zip sha:" $zip_sha;
+		if [[ "$sha" == "$zip_sha" ]]; then
+			echo "Done."
 			touch $current_version
 			echo "$client_zip" > $current_version
 			if [[ -f "$install_dir/conf/nxt-default.properties" ]]; then
@@ -116,19 +116,19 @@ install(){
 				cp $install_dir/conf/nxt-default.properties /volume1/@tmp || 
 				{ echo "Could not backup configuration file."; exit 1; }
 				echo "done.";
-            fi
-            $unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
+			fi
+			$unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
 			{ echo "Could not extract files into NXT client root directory."; exit 1; }	
 			if [[ -f "$install_dir/conf/nxt-default.properties" ]]; then
 				echo -n "Restoring configuration file...";
 				cp /volume1/@tmp/nxt-default.properties $install_dir/conf || 
 				{ echo "Could not restore configuration file."; exit 1; }
 				echo "done.";
-            fi	
-        else
-            echo "CRITICAL: The shasum does not match!. Installation aborted.";
-            exit 1;
-        fi
+			fi	
+		else
+			echo "CRITICAL: The shasum does not match!. Installation aborted.";
+			exit 1;
+		fi
     fi
 
 }
