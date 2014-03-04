@@ -10,19 +10,13 @@
 
 # dmmh
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/syno/bin";
-
 # NXT-Client configuration
 source "/etc/nxt/nxt.conf"
 log=$install_dir/nxt.log
 wget_bin=$(which wget);
 java_bin=$(which java);
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/syno/bin";
-
-if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] ||
-   [[ -z "$client_start_args" ]]; then
-
+if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] || [[ -z "$client_start_args" ]]; then
     echo "Missing configuration in nxt.conf";
     exit 0
 fi
