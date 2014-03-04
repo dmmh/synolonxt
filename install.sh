@@ -11,14 +11,6 @@
 # thanks,
 # dmmh
 
-# ORIGINAL LICENSE:
-#  ----------------------------------------------------------------------------
-#  "THE NXT-WARE LICENSE" NXT: 13570469120032392161 (Revision: 25519)
-#  j0b <gemeni@gmail.com> wrote this file. As long as you retain this notice you
-#  can do whatever you want with this stuff. IF you think this stuff is worth it, 
-#  you can send me NXT, my public key is above.
-#  ----------------------------------------------------------------------------
-
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/syno/bin";
 
 wget_bin=$(which wget);
@@ -202,3 +194,12 @@ case "$1" in
 esac
 
 exit 0
+
+
+# ORIGINAL LICENSE:
+#  ----------------------------------------------------------------------------
+#  "THE NXT-WARE LICENSE" NXT: 13570469120032392161 (Revision: 25519)
+#  j0b <gemeni@gmail.com> wrote this file. As long as you retain this notice you
+#  can do whatever you want with this stuff. IF you think this stuff is worth it, 
+#  you can send me NXT, my public key is above.
+#  ----------------------------------------------------------------------------
