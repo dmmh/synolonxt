@@ -8,16 +8,9 @@
 # Send me some NXT coins if you find this useful. 
 # NXT: 5382956979630465590
 
-# thanks,
 # dmmh
 
-# ORIGINAL LICENSE:
-#  ----------------------------------------------------------------------------
-#  "THE NXT-WARE LICENSE" NXT: 13570469120032392161 (Revision: 25519)
-#  j0b <gemeni@gmail.com> wrote this file. As long as you retain this notice you
-#  can do whatever you want with this stuff. IF you think this stuff is worth it, 
-#  you can send me NXT, my public key is above.
-#  ----------------------------------------------------------------------------
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/syno/bin";
 
 # NXT-Client configuration
 source "/etc/nxt/nxt.conf"
@@ -25,8 +18,10 @@ log=$install_dir/nxt.log
 wget_bin=$(which wget);
 java_bin=$(which java);
 
-if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] || [[ -z "$javapath" ]] ||
-   [[ -z "$client_start_args" ]] || [[ -z "$client_stop_args" ]]; then
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/syno/bin";
+
+if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] ||
+   [[ -z "$client_start_args" ]]; then
 
     echo "Missing configuration in nxt.conf";
     exit 0
@@ -49,7 +44,7 @@ start() {
 	fi
 	touch $log
 	cd $install_dir
-    "$javapath" $client_start_args >>$log 2>&1 & pid=$!
+    "$java_bin" $client_start_args >>$log 2>&1 & pid=$!
     touch $pidfile && chown $nxtuser:$nxtuser $pidfile
 	echo $pid > $pidfile
     cd $c
@@ -116,3 +111,11 @@ case "$1" in
 esac
 
 exit 0
+
+# ORIGINAL LICENSE:
+#  ----------------------------------------------------------------------------
+#  "THE NXT-WARE LICENSE" NXT: 13570469120032392161 (Revision: 25519)
+#  j0b <gemeni@gmail.com> wrote this file. As long as you retain this notice you
+#  can do whatever you want with this stuff. IF you think this stuff is worth it, 
+#  you can send me NXT, my public key is above.
+#  ----------------------------------------------------------------------------
