@@ -16,52 +16,55 @@ log=$install_dir/nxt.log
 wget_bin=$(which wget);
 java_bin=$(which java);
 
-if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] || [[ -z "$client_start_args" ]]; then
-    echo "Missing configuration in nxt.conf";
-    exit 0
-fi
-
-if [[ -z "$java_bin" ]]; then
+check(){
+	if [[ -z "$pidfile" ]] || [[ -z "$nxtuser" ]] || [[ -z "$client_start_args" ]]; then
+		echo "Missing configuration in nxt.conf";
+		exit 0
+	fi
+	if [[ -z "$java_bin" ]]; then
 	echo "Java is not installed. Please install Java first. Easiest way is using Synology Java Manager (beta app), get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0"
-    exit 0
-fi
+		exit 0
+	fi
+}
 
 start() {
+	check
 	echo "Starting NXT-Client..."
-    c=`pwd`
+	c=`pwd`
 	if [ -e $pidfile ] ; then
-        echo "NXT-Client is already running. PID=`cat $pidfile`"
-        exit 0;
-    fi
+		echo "NXT-Client is already running. PID=`cat $pidfile`"
+		exit 0;
+	fi
 	if [[ -e $log ]]; then
 		rm $log
 	fi
 	touch $log
 	cd $install_dir
-    "$java_bin" $client_start_args >>$log 2>&1 & pid=$!
-    touch $pidfile && chown $nxtuser:$nxtuser $pidfile
+	"$java_bin" $client_start_args >>$log 2>&1 & pid=$!
+	touch $pidfile && chown $nxtuser:$nxtuser $pidfile
 	echo $pid > $pidfile
-    cd $c
+	cd $c
 	status
 	echo "It might take up to 5 minutes or so before you will be able to access the NXT client via your browser...be patient."
 	echo "You can watch the NXT client's output by using $ "$script_dir"/nxtclient.sh log";
 }
 
 stop() {
-    c=`pwd`
+	c=`pwd`
 	echo "Trying to stop NXT-Client..."
 	if [ -e $pidfile ] ; then
 		pid=`cat $pidfile`
 		kill $pid
-        rm $pidfile		
+		rm $pidfile		
 		status
-    else
-        echo "NXT client is not running. No PID file."
-    fi
+	else
+		echo "NXT client is not running. No PID file."
+	fi
 }
 
 status() {
-    touch $current_version
+	check
+	touch $current_version
 	version=`cat $current_version`
 	client_version=$($wget_bin -q -O -  http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep -v "(e.zip|e.sha256|changelog.txt)" | egrep '(zip$)' | tail -n 1);
 	if [[ "$version"] != '' ]] && [[ "$client_version"] != '' ]]; then
@@ -73,35 +76,34 @@ status() {
 	fi
 	if [ -e $pidfile ] ; then
 		echo "NXT-Client is running!"
-    else
+	else
 		echo "NXT-Client stopped."
 	fi
-}   
+}
 
 log() {
 	cat $log
 } 
 
-case "$1" in
-
-    start)
-        start
-    ;;
-    stop)
-        stop
-    ;;
-    status)
-        status
-    ;;
+case $1 in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	status)
+		status
+	;;
 	log)
-        log
-    ;;
-    *)
+		log
+	;;
+	*)
 
-    N=$script_dir/${0##*/}
-    echo "Usage: $N {start|stop|status|log}" >&2
-    exit 1
-    ;;
+	N=$script_dir/${0##*/}
+	echo "Usage: $N {start|stop|status|log}" >&2
+	exit 1
+	;;
 esac
 
 exit 0
