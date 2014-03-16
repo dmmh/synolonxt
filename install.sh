@@ -8,10 +8,7 @@
 # Send me some NXT coins if you find this useful. 
 # NXT: 5382956979630465590
 
-# thanks,
 # dmmh
-
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/syno/bin";
 
 wget_bin=$(which wget);
 unzip_bin=$(which unzip);
@@ -101,15 +98,17 @@ install(){
 			echo "Done."
 			touch $current_version
 			echo "$client_zip" > $current_version
-			if [[ -f "$install_dir/conf/nxt-default.properties" ]]; then
+			if [[ -f "$install_dir"/conf/nxt-default.properties ]]; then
 				echo -n "Backing up configuration file...";
 				cp $install_dir/conf/nxt-default.properties /volume1/@tmp || 
 				{ echo "Could not backup configuration file."; exit 1; }
 				echo "done.";
 			fi
+			echo -n "Unzipping NXT client files...";
 			$unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
 			{ echo "Could not extract files into NXT client root directory."; exit 1; }	
-			if [[ -f "$install_dir/conf/nxt-default.properties" ]]; then
+			echo "done."
+			if [[ -f "$install_dir"/conf/nxt-default.properties ]]; then
 				echo -n "Restoring configuration file...";
 				cp /volume1/@tmp/nxt-default.properties $install_dir/conf || 
 				{ echo "Could not restore configuration file."; exit 1; }
