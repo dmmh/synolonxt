@@ -139,6 +139,13 @@ host(){
 	vi $install_dir/conf/nxt-default.properties
 }
 
+uninstall(){
+	echo "Removing all files...";
+	rm -R /usr/local/bin/nxt;
+	rm /usr/local/etc/rc.d/nxtclient;
+	rm /etc/nxt/nxt.conf;
+}
+
 case "$1" in
 
 	install)
@@ -167,10 +174,8 @@ case "$1" in
 		host
 	;;
 	uninstall)
-		echo "Removing all files..."
-		rm -R /usr/local/bin/nxt
-		rm /usr/local/etc/rc.d/nxtclient
-		rm /etc/nxt/nxt.conf
+		uninstall
+	;;
 	*)
 
 	N=${0##*/}
