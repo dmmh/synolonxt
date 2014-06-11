@@ -73,7 +73,7 @@ install(){
 	echo " Done.";
 
 	if [[ "$1" != "update" ]]; then
-		cp $c/nxtclient.sh $script_dir > /dev/null 2>&1 || { echo "Could not copy NXT client init script into" $script_dir; exit 1; }
+		cp $c/nxtclient $script_dir > /dev/null 2>&1 || { echo "Could not copy NXT client init script into" $script_dir; exit 1; }
 		cp $c/install.sh $cfg_dir > /dev/null 2>&1 || { echo "Could not copy NXT client install script into" $cfg_dir; exit 1; }
 		chmod 755 $cfg_dir/install.sh
 	fi
