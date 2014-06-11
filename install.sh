@@ -39,8 +39,8 @@ install(){
 	if [[ ! -d "$cfg_dir" ]]; then
 		echo -n "Creating configuration directory for NXT client.. ";
 		mkdir -p $cfg_dir && echo "done." || { echo "Could not create NXT client configuration directory." ; exit 1;}
-		cp $c/nxt.conf $cfg_dir
 	fi
+	cp $c/nxt.conf $cfg_dir
 	
 	if [[ ! -d "$install_dir" ]]; then    
 		echo -n "Creating NXT client root directory.. ";
@@ -156,10 +156,10 @@ case "$1" in
 			install
 		fi
 
-		echo "Installation done. Start NXT client with $ $script_dir/nxtclient.sh start, then browse to https://localhost:7875";
+		echo "Installation done. Start NXT client with $ $script_dir/nxtclient.sh start, then browse to https://localhost:7876";
 		echo "Or reboot and NXT client will start itself."
 		echo "Be sure to accept incoming TCP traffic to port 7874, or the NXT client will not be able to communicate with it's network.";
-		echo "If you get a screen saying \"The Matrix has you...\", run $ $cfg_dir/install.sh host and add your computer's IP to the allowedUserHosts XML field and restart the NXT client.";
+		echo "If you get a screen saying \"The Matrix has you...\", run $ sh $cfg_dir/install.sh host and add your computer's IP to the allowedUserHosts XML field and restart the NXT client.";
 	;;
 	update)
 		if [[ -n "$2" ]]; then
