@@ -72,53 +72,35 @@ install(){
 
 	echo " Done.";
 
-	client_sign=$($wget_bin -q -O - http://download.nxtcrypto.org | sed 's/\(>\|<\)/ /g' | awk {'print $3 '} | egrep $client_sign_file | grep "asc")
-
-	if [[ -n "$client_sign" ]]; then
-		echo -n "Downloading $client_zip shasum signature...";
-		$wget_bin -P $tmp_dir -q http://download.nxtcrypto.org/$client_sign > /dev/null 2>&1 || 
-		{ echo "could not download NXT client shasum signature. Exiting installation." ; exit 1;}
-		echo "done.";
-	fi
-
 	if [[ "$1" != "update" ]]; then
 		cp $c/nxtclient.sh $script_dir > /dev/null 2>&1 || { echo "Could not copy NXT client init script into" $script_dir; exit 1; }
 		cp $c/install.sh $cfg_dir > /dev/null 2>&1 || { echo "Could not copy NXT client install script into" $cfg_dir; exit 1; }
 		chmod 755 $cfg_dir/install.sh
 	fi
 	
-	sha=$(grep "$client_zip" $tmp_dir/$client_sign_file | awk {'print $1'});
-
-	echo "sha:" $sha;
-
-	if [[ -n "$sha" ]]; then
-		zip_sha=$($openssl_bin dgst -sha256 $tmp_dir/$client_zip | awk {'print $2'});
-		echo "zip sha:" $zip_sha;
-		if [[ "$sha" == "$zip_sha" ]]; then
-			echo "Done."
-			touch $current_version
-			echo "$client_zip" > $current_version
-			if [[ -f "$install_dir"/conf/nxt-default.properties ]]; then
-				echo -n "Backing up configuration file...";
-				cp $install_dir/conf/nxt-default.properties /volume1/@tmp || 
-				{ echo "Could not backup configuration file."; exit 1; }
-				echo "done.";
-			fi
-			echo -n "Unzipping NXT client files...";
-			$unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
-			{ echo "Could not extract files into NXT client root directory."; exit 1; }	
-			echo "done."
-			if [[ -f "$install_dir"/conf/nxt-default.properties ]]; then
-				echo -n "Restoring configuration file...";
-				cp /volume1/@tmp/nxt-default.properties $install_dir/conf || 
-				{ echo "Could not restore configuration file."; exit 1; }
-				echo "done.";
-			fi	
-		else
-			echo "CRITICAL: The shasum does not match!. Installation aborted.";
-			exit 1;
-		fi
+	echo "Done."
+	touch $current_version
+	echo "$client_zip" > $current_version
+	
+	if [[ -f "$install_dir"/conf/nxt-default.properties ]]; then
+		echo -n "Backing up configuration file...";
+		cp $install_dir/conf/nxt-default.properties /volume1/@tmp || 
+		{ echo "Could not backup configuration file."; exit 1; }
+		echo "done.";
 	fi
+	
+	echo -n "Unzipping NXT client files...";
+	$unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
+	{ echo "Could not extract files into NXT client root directory."; exit 1; }	
+	
+	echo "done."
+	
+	if [[ -f "$install_dir"/conf/nxt-default.properties ]]; then
+		echo -n "Restoring configuration file...";
+		cp /volume1/@tmp/nxt-default.properties $install_dir/conf || 
+		{ echo "Could not restore configuration file."; exit 1; }
+		echo "done.";
+	fi	
 }
 
 update(){
