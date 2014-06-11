@@ -78,7 +78,6 @@ install(){
 		chmod 755 $cfg_dir/install.sh
 	fi
 	
-	echo "Done."
 	touch $current_version
 	echo "$client_zip" > $current_version
 	
@@ -97,9 +96,9 @@ install(){
 	
 	echo "done."
 	
-	if [[ -f "$install_dir"/conf/nxt-default.properties ]]; then
+	if [[ -f $tmp_dir/nxt-default.properties ]]; then
 		echo -n "Restoring configuration file...";
-		cp /volume1/@tmp/nxt-default.properties $install_dir/conf || 
+		cp $tmp_dir/nxt-default.properties $install_dir/conf || 
 		{ echo "Could not restore configuration file."; exit 1; }
 		echo "done.";
 	fi	
