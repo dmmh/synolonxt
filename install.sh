@@ -166,10 +166,15 @@ case "$1" in
 		echo "Opening file to edit allowedUserHosts"; 
 		host
 	;;
+	uninstall)
+		echo "Removing all files..."
+		rm -R /usr/local/bin/nxt
+		rm /usr/local/etc/rc.d/nxtclient
+		rm /etc/nxt/nxt.conf
 	*)
 
 	N=${0##*/}
-	echo "Usage: $N {install|update|host}" >&2
+	echo "Usage: $N {install|update|host|uninstall}" >&2
 	exit 1
 	;;
 esac
