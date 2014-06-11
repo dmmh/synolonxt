@@ -36,7 +36,6 @@ if [[ -z "$wget_bin" ]] || [[ -z "$unzip_bin" ]] || [[ -z "$openssl_bin" ]]; the
 fi
 
 install(){
-
 	if [[ ! -d "$cfg_dir" ]]; then
 		echo -n "Creating configuration directory for NXT client.. ";
 		mkdir -p $cfg_dir && echo "done." || { echo "Could not create NXT client configuration directory." ; exit 1;}
@@ -56,7 +55,7 @@ install(){
 	if ! id -u nxt >/dev/null 2>&1; then
 		echo -n "Adding nxt user.. ";
 		adduser -H -D -h /usr/local/bin -s /sbin/nologin nxt >/dev/null 2>&1 && echo "done." ||
-		{ echo "Could not add nxt user.  Add it manually after this installation has finished." && exit 1;}
+		{ echo "Could not add nxt user. Add it manually after this installation has finished." && exit 1;}
 	fi
 
 	if [[ -z "$2" ]]; then
@@ -85,6 +84,7 @@ install(){
 	if [[ "$1" != "update" ]]; then
 		cp $c/nxtclient.sh $script_dir > /dev/null 2>&1 || { echo "Could not copy NXT client init script into" $script_dir; exit 1; }
 		cp $c/install.sh $cfg_dir > /dev/null 2>&1 || { echo "Could not copy NXT client install script into" $cfg_dir; exit 1; }
+		chmod 755 $cfg_dir/install.sh
 	fi
 	
 	sha=$(grep "$client_zip" $tmp_dir/$client_sign_file | awk {'print $1'});
