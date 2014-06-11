@@ -90,8 +90,10 @@ install(){
 	fi
 	
 	echo -n "Unzipping NXT client files...";
-	$unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir && rm $tmp_dir/$client_sign_file && rm $tmp_dir/$client_zip && chown -R nxt:nxt $install_dir > /dev/null 2>&1 || 
+	$unzip_bin -oq $tmp_dir/$client_zip -d $nxt_bin_dir > /dev/null 2>&1 || 
 	{ echo "Could not extract files into NXT client root directory."; exit 1; }	
+	chown -R nxt:nxt $install_dir
+	rm $tmp_dir/$client_zip	
 	
 	echo "done."
 	
