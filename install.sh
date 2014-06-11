@@ -156,7 +156,7 @@ case "$1" in
 			install
 		fi
 
-		echo "Installation done. 
+		echo "Installation done."; 
 		echo "Now run $ sh $cfg_dir/install.sh host";
 		echo "Add your computer's IP to the nxt.allowedBotHosts field (under API server)";
 		echo "Change nxt.apiServerHost=127.0.0.1 to nxt.apiServerHost=0.0.0.0";
