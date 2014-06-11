@@ -14,8 +14,8 @@ NXT: 5382956979630465590
 thanks,
 dmmh
 
-The NXT client needs Java to work, so this script assumes you have installed the beta Synology application Java Manager.
-Get it here: http://www.synology.com/en-uk/support/beta_dsm_5_0
+The NXT client needs Java to work, on Synology it's easy to install it with the application Java Manager.
+Get it here: http://www.synology.com/en-uk/dsm/app_packages/JavaManager
 
 This README assumes you have git installed via optware, and the command below to install it WILL NOT WORK on a default Synology installation.
 The script itself also uses optware which isn't installed by default.
@@ -32,13 +32,14 @@ INSTALL
 3. 	Installation done. 
 
 4. 	$ reboot to start the client on boot (or from a SSH client start NXT client with: $ /usr/local/etc/rc.d/nxtclient.sh start). 
-	You need to modify this line in the Nxt client configuration file: nxt.uiServerHost=127.0.0.1 to nxt.uiServerHost=0.0.0.0. 
+	You need to modify this line in the NXT client configuration file: nxt.uiServerHost=127.0.0.1 to nxt.uiServerHost=0.0.0.0. 
 	(use $ /etc/nxt/install.sh host to open the configuration file)
-	Find out the local IP address of your NAS, then type http://ipadress:7875 in your browser to connect to the client. 
+	Find out the local IP address of your NAS, then type http://ipadress:7876 in your browser to connect to the client. 
 
 UPDATE
 
-1. This script auto updates the NXT client when a newer version is available. It will only do so when starting or stopping the NXT client with this script though. 	
+1. 	This script auto updates the NXT client when a newer version is available. 
+	It will only do so when starting or stopping the NXT client with this script though. 	
 
 dmmh
 
