@@ -158,7 +158,7 @@ case "$1" in
 
 		echo "Installation done. 
 		echo "Now run $ sh $cfg_dir/install.sh host";
-		echo "Add your computer's IP to the allowedBotHosts field (under API server)";
+		echo "Add your computer's IP to the nxt.allowedBotHosts field (under API server)";
 		echo "Change nxt.apiServerHost=127.0.0.1 to nxt.apiServerHost=0.0.0.0";
 		echo "Reboot your NAS and NXT client will start itself."
 		echo "Be sure to accept incoming TCP traffic to port 7874, or the NXT client will not be able to communicate with it's network.";
@@ -173,7 +173,7 @@ case "$1" in
 		echo "Update done.";        
 	;;
 	host)
-		echo "Opening file to edit allowedUserHosts"; 
+		echo "Opening file to edit nxt.allowedBotHosts and nxt.apiServerHost"; 
 		host
 	;;
 	uninstall)
