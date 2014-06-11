@@ -24,17 +24,15 @@ INSTALL
 
 1. 	Install this script: 	$ cd /volume1/@tmp && git clone https://github.com/dmmh/synolonxt && chmod -R 755 synolonxt && cd synolonxt
 
-2. 	Install NXT client: 	$ install.sh install
+2. 	Install NXT client: 	$ sh install.sh install
 	This will install the latest version of NXT client
 	The client is downloaded from the public source for NXT client software.
 	During install the script validates against known sha256sum hash.
 
 3. 	Installation done. 
 
-4. 	$ reboot to start the client on boot (or from a SSH client start NXT client with: $ /usr/local/etc/rc.d/nxtclient.sh start). 
-	You need to modify this line in the NXT client configuration file: nxt.uiServerHost=127.0.0.1 to nxt.uiServerHost=0.0.0.0. 
-	(use $ /etc/nxt/install.sh host to open the configuration file)
-	Find out the local IP address of your NAS, then type http://ipadress:7876 in your browser to connect to the client. 
+4. 	You need to modify some values in the configuration file to be able to connect to the NXT client.
+	Read the post install instructions in how to do this.
 
 UPDATE
 
