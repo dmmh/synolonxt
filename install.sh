@@ -144,7 +144,7 @@ uninstall(){
 	echo "Removing all files...";
 	rm -R /usr/local/bin/nxt;
 	rm /usr/local/etc/rc.d/nxtclient;
-	rm /etc/nxt/nxt.conf;
+	rm -R /etc/nxt;
 }
 
 case "$1" in
@@ -156,10 +156,12 @@ case "$1" in
 			install
 		fi
 
-		echo "Installation done. Start NXT client with $ $script_dir/nxtclient.sh start, then browse to https://localhost:7876";
-		echo "Or reboot and NXT client will start itself."
+		echo "Installation done. 
+		echo "Now run $ sh $cfg_dir/install.sh host";
+		echo "Add your computer's IP to the allowedBotHosts field (under API server)";
+		echo "Change nxt.apiServerHost=127.0.0.1 to nxt.apiServerHost=0.0.0.0";
+		echo "Reboot your NAS and NXT client will start itself."
 		echo "Be sure to accept incoming TCP traffic to port 7874, or the NXT client will not be able to communicate with it's network.";
-		echo "If you get a screen saying \"The Matrix has you...\", run $ sh $cfg_dir/install.sh host and add your computer's IP to the allowedUserHosts XML field and restart the NXT client.";
 	;;
 	update)
 		if [[ -n "$2" ]]; then
